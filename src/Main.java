@@ -9,7 +9,24 @@ public class Main {
         //We need to have resources
         Optional<Resources> resource = Resources.getResourcesByName("java");
 
-        System.out.println(resource.get().toString());
+        System.out.println(resource.get().toString()+ " " + Resources.currentsize.toString());
+        Resources.utilizeResource("java");
+        Resources.utilizeResource("excel");
+        Resources.utilizeResource("excel");
+        Resources.utilizeResource("excel");
+        System.out.println(Resources.currentsize.toString());
+
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+
+        System.out.println(Resources.currentsize.toString());
 
         //we need to have users performing the tasks
 
