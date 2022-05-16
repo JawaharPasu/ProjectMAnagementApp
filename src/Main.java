@@ -21,8 +21,17 @@ public class Main {
 
         System.out.println(Resources.currentsize.toString());
 
-        Task task = new Task(new String[]{"excel","word"});
-        System.out.println(task.getTasks().toString());
+        Task task1 = new Task(new String[]{"excel","word"});
+        //System.out.println(task1.getTasks().toString());
+        Task task2 = new Task(new String[]{"java","splunk"});
+
+        User user1 = new User(1.0);
+        user1.addResourcesSeqquence(task1);
+        user1.addResourcesSeqquence(task2);
+
+        System.out.println(user1.getSeqResource().toString());
+
+
 
         //we need to have users performing the tasks
 
