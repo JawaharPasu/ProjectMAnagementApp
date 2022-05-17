@@ -7,9 +7,9 @@ public class Main {
         //The function should verify whether the project can be completed if work started today.
 
         //We need to have resources
-        Optional<Resources> resource = Resources.getResourcesByName("java");
-
-        System.out.println(resource.get().toString()+ " " + Resources.currentsize.toString());
+//        Optional<Resources> resource = Resources.getResourcesByName("java");
+//
+//        System.out.println(resource.get().toString()+ " " + Resources.currentsize.toString());
 //        Resources.utilizeResource("java");
 //        Resources.utilizeResource("excel");
 //
@@ -24,7 +24,7 @@ public class Main {
 //        Resources.surrenderResource("excel");
 
 
-        System.out.println(Resources.currentsize.toString());
+//        System.out.println(Resources.currentsize.toString());
 
         //To create tasks
         Task task1 = new Task(new String[]{"excel","word"});
@@ -33,6 +33,7 @@ public class Main {
 
         //To create users
         User user1 = new User(1.0);
+        User user2 = new User(0.5);
 //        user1.addTasks(task1);
 //        user1.addTasks(task2);
 //
@@ -42,6 +43,7 @@ public class Main {
 
         //To add tasks to scheduler and check the status message from the scheduler
         System.out.println(Scheduler.addTaskToScheduler(task1,3.0));
+        System.out.println(Scheduler.addTaskToScheduler(task2,1.0));
 
 
 

@@ -36,13 +36,15 @@ public class Scheduler {
                 //check how many days the user is occupied
                 Double occpiedDays = usr.getOccupiedDays();
                 //calculate the days req to complete the task by a user based on skillset
-                Double daysReqForUser = skill*days;
+                // and the number of resources to work for a give task
+                Double daysReqForUser = skill*days*task.getTasks().size();
                 //if sum of ossupied days and days req to complete the job is more then task can't be done
-                if((occpiedDays+daysReqForUser)>days) return "all resources are occupied";
+                //skip and continue to next user
+                if((occpiedDays+daysReqForUser)>days) continue;
                 usr.addTasks(task);
                 return "task added to user having skillset : " + usr.getSkillLevel().toString();
             }
         }
-        return "task can't be added";
+        return "All users are occupied";
     }
 }
