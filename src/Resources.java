@@ -16,6 +16,9 @@ public enum Resources {
     // creating a map which contains the current resource availability at a particular time
     public static Map<String, Integer> currentsize = assignCurrentSize();
 
+    //create a Map which stores the resource and no of days resource will be occupied
+    public static Map<String, Double> occupancyOfResource = assignInitialSize();
+
     Resources(String name, Integer size) {
         this.name = name;
         this.size = size;
@@ -34,7 +37,7 @@ public enum Resources {
     }
 
     //while initial load, the available resources are equal to the predfined numebr
-    public static Map<String, Integer> assignCurrentSize(){
+    private static Map<String, Integer> assignCurrentSize(){
         Map<String, Integer> result = new HashMap<>();
         Arrays.stream(Resources.values()).forEach(res -> result.put(res.getName(), res.getSize()));
         return result;
@@ -54,5 +57,12 @@ public enum Resources {
         if(resSize>=getResourcesByName(name).get().getSize()) return false;
         currentsize.put(name, resSize+1);
         return true;
+    }
+
+    //while initial load, the available resources are equal to the predfined numebr
+    private static Map<String, Double> assignInitialSize(){
+        Map<String, Double> result = new HashMap<>();
+        Arrays.stream(Resources.values()).forEach(res -> result.put(res.getName(), 0.0));
+        return result;
     }
 }

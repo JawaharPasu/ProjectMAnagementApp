@@ -10,9 +10,13 @@ public class User {
     //the resources are arranged in the sequence as FIFO
     private Queue<Resources> seqResource = new PriorityQueue<>();
 
+    //To know how many days the user is occupied with exisitng tasks
+    private Double occupiedDays = 0.0;
+
     public User(Double skillLevel) {
         this.skillLevel = skillLevel;
-        Scheduler.addUser(this.skillLevel);
+        //when new user is added this has to be communicated to scheduler
+        Scheduler.addUser(this);
     }
 
     public Double getSkillLevel() {
@@ -23,6 +27,7 @@ public class User {
     public List<Task> addTasks(Task task){
         committedTasks.add(task);
         seqResource.addAll(task.getTasks());
+        occupiedDays = seqResource.size()*skillLevel;
         return committedTasks;
     }
 
@@ -34,9 +39,7 @@ public class User {
         return seqResource;
     }
 
-    //calculates the total days required to complete the task for the current user
-    private Integer calculateEndDayFromCurrent(Double days){
-        return (int) Math.floor(days*skillLevel);
+    public Double getOccupiedDays() {
+        return occupiedDays;
     }
-
 }
