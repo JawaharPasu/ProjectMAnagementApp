@@ -20,6 +20,8 @@ public class Scheduler {
         //once a task is added, the scheduler should look for resource availability based on skillset and
         // check whether the resource is occupied
         Double sum =0.0;
+        Double maxRemainingDays=0.0;
+        Double userskillSelected = 0.0;
         for(Task taskval:taskInfo.keySet()) {
             for(Resources res:taskval.getTasks()){
                 sum = sum + Resources.occupancyOfResource.get(res.getName());
@@ -34,13 +36,24 @@ public class Scheduler {
             for(Double skill: userList.keySet()){
                 User usr = userList.get(skill);
                 //check how many days the user is occupied
-                Double occpiedDays = usr.getOccupiedDays();
+                Double occupiedDays = usr.getOccupiedDays();
                 //calculate the days req to complete the task by a user based on skillset
                 // and the number of resources to work for a give task
-                Double daysReqForUser = skill*days*task.getTasks().size();
+                Double daysReqForUser = skill*(task.getTasks().size());
+                //add occupied days and daysreq to compute total days by which task can be completed
+                Double daysToComplete = occupiedDays+daysReqForUser;
                 //if sum of ossupied days and days req to complete the job is more then task can't be done
                 //skip and continue to next user
-                if((occpiedDays+daysReqForUser)>days) continue;
+                if(daysToComplete>days) continue;
+                //what if subsequent users have more idle time, we can assign if they can complete it soon
+                Double currentRemDays = days-daysToComplete;
+                if(maxRemainingDays<=currentRemDays){
+                    maxRemainingDays = currentRemDays;
+                    userskillSelected = skill;
+                }
+            }
+            if(userskillSelected!=0.0) {
+                User usr = userList.get(userskillSelected);
                 usr.addTasks(task);
                 return "task added to user having skillset : " + usr.getSkillLevel().toString();
             }

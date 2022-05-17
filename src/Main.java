@@ -43,7 +43,7 @@ public class Main {
 
         //To add tasks to scheduler and check the status message from the scheduler
         System.out.println(Scheduler.addTaskToScheduler(task1,3.0));
-        System.out.println(Scheduler.addTaskToScheduler(task2,1.0));
+        System.out.println(Scheduler.addTaskToScheduler(task2,2.5));
 
 
 
