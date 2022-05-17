@@ -2,7 +2,7 @@ import java.util.Optional;
 
 public class Main {
     public static void main(String[] args){
-        System.out.println("Hello world");
+        System.out.println("Hello There!");
 
         //The function should verify whether the project can be completed if work started today.
 
@@ -26,10 +26,12 @@ public class Main {
 
         System.out.println(Resources.currentsize.toString());
 
+        //To create tasks
         Task task1 = new Task(new String[]{"excel","word"});
         //System.out.println(task1.getTasks().toString());
         Task task2 = new Task(new String[]{"java","splunk"});
 
+        //To create users
         User user1 = new User(1.0);
 //        user1.addTasks(task1);
 //        user1.addTasks(task2);
@@ -38,8 +40,8 @@ public class Main {
 //        user1.addTasks(task1);
 //        user1.addTasks(task2);
 
+        //To add tasks to scheduler and check the status message from the scheduler
         System.out.println(Scheduler.addTaskToScheduler(task1,3.0));
-        //Scheduler.userList.stream().forEach(usr -> System.out.println(usr));
 
 
 
