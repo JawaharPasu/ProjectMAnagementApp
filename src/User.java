@@ -1,7 +1,7 @@
 import java.util.*;
 
 //defining user class which has specific user characteristic and tasks
-public class User {
+public class User extends TimerTask {
     //it provides the speed of the user in executing the task (lower is better)
     private Double skillLevel;
     //the list of tasks in plate for the user
@@ -12,14 +12,25 @@ public class User {
 
     //has a boolean variable that shows that if user is awaiting license for a resource
     private boolean waitingForResource = false;
+    //variable to show whether a resource is surrendered or not
+    private Resources surrenderedAndNext = null;
 
     //To know how many days the user is occupied with exisitng tasks
     private Double occupiedDays = 0.0;
+
+    private Integer count = 0;
+
+    Timer timer = new Timer();
+
+    //the timer is the time each task will be performed
+    // (the last method parameter below --> period) is fastness of task completion
+    long speedOfExecution;
 
     public User(Double skillLevel) {
         this.skillLevel = skillLevel;
         //when new user is added this has to be communicated to scheduler
         Scheduler.addUser(this);
+        this.speedOfExecution = (long)Math.floor(2000*skillLevel);
     }
 
     public Double getSkillLevel() {
@@ -32,7 +43,11 @@ public class User {
         seqResource.addAll(task.getTasks());
         occupiedDays = seqResource.size()*skillLevel;
         //acquire the license when it is the first task to be executed
-        if(committedTasks.size()==1) acquireLicense();
+        if(committedTasks.size()==1) {
+            acquireLicense();
+            //starting the timer to perform the tasks
+            timer.scheduleAtFixedRate(this,speedOfExecution,speedOfExecution);
+        }
         return committedTasks;
     }
 
@@ -49,12 +64,49 @@ public class User {
     }
 
     private void acquireLicense(){
-        Resources res = seqResource.peek();
-        boolean value = Resources.utilizeResource(res.getName(), this.skillLevel);
-        if(!value) waitingForResource = true;
+        String res = seqResource.peek().getName();
+        boolean value = Resources.utilizeResource(res, this.skillLevel);
+        waitingForResource = !value ? true : false;
+        System.out.println("user of: "+ this.skillLevel + " acquired the license of : " + res);
     }
 
     private void surrenderLicense(){
-        Resources.surrenderResource(seqResource.poll().getName(), this.skillLevel);
+        String res = seqResource.poll().getName();
+        boolean value = Resources.surrenderResource(res, this.skillLevel);
+        surrenderedAndNext = seqResource.peek();
+        System.out.println("user of: "+ this.skillLevel + " surrendered the license of : " + res);
+    }
+
+    private Integer counterMethod(){
+        return count+=1;
+    }
+
+    private void stopTimer(){
+        timer.cancel();
+    }
+
+    public void run(){
+        //System.out.println("running repeat function of : "+ this.skillLevel + " count = " + counterMethod());
+        //if there is no items in the queue stop the timer
+        if(this.seqResource.size()==0) {
+            stopTimer();
+            this.committedTasks = new ArrayList<>();
+        }
+        //if user is not waiting for resource, surrender the license of the task done
+        // and acquire the license of next task
+        else if(!waitingForResource){
+            surrenderLicense();
+            //the size may become zero of the queue, s
+            // o check if element available and continue to acquire the license
+            if(this.seqResource.size()>0) acquireLicense();
+        }else if(waitingForResource){
+            //if waiting for resources, get the available license of that resource, if available, acquire license
+            String res = seqResource.peek().getName();
+            if(Resources.currentsize.get(res)>=1){
+                acquireLicense();
+                //setting false as we have acquired the license
+                waitingForResource = false;
+            }
+        }
     }
 }

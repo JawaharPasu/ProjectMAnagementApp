@@ -56,7 +56,7 @@ public class Main {
         System.out.println(Scheduler.addTaskToScheduler(task6,2.0));
 
 
-        Resources.occupancyOfResource.entrySet().stream().forEach(System.out::println);
+        //Resources.occupancyOfResource.entrySet().stream().forEach(System.out::println);
 
 
 
