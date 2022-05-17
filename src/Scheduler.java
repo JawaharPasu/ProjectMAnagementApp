@@ -24,7 +24,11 @@ public class Scheduler {
         Double userskillSelected = 0.0;
         for(Task taskval:taskInfo.keySet()) {
             for(Resources res:taskval.getTasks()){
-                sum = sum + Resources.occupancyOfResource.get(res.getName());
+                //check the no of licenses available,
+                // only if resource not available get the day after which it will be available
+                if(Resources.currentsize.get(res.getName())==0) {
+                    sum = sum + Resources.occupancyOfResource.get(res.getName());
+                }
             }
         }
         //if the resources are occupied for the entire time before deadline, then return false
@@ -41,7 +45,8 @@ public class Scheduler {
                 // and the number of resources to work for a give task
                 Double daysReqForUser = skill*(task.getTasks().size());
                 //add occupied days and daysreq to compute total days by which task can be completed
-                Double daysToComplete = occupiedDays+daysReqForUser;
+                //need to add the sum (from when resource will be available)
+                Double daysToComplete = sum+occupiedDays+daysReqForUser;
                 //if sum of ossupied days and days req to complete the job is more then task can't be done
                 //skip and continue to next user
                 if(daysToComplete>days) continue;

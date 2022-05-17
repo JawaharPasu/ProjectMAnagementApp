@@ -10,6 +10,9 @@ public class User {
     //the resources are arranged in the sequence as FIFO
     private Queue<Resources> seqResource = new PriorityQueue<>();
 
+    //has a boolean variable that shows that if user is awaiting license for a resource
+    private boolean waitingForResource = false;
+
     //To know how many days the user is occupied with exisitng tasks
     private Double occupiedDays = 0.0;
 
@@ -28,6 +31,8 @@ public class User {
         committedTasks.add(task);
         seqResource.addAll(task.getTasks());
         occupiedDays = seqResource.size()*skillLevel;
+        //acquire the license when it is the first task to be executed
+        if(committedTasks.size()==1) acquireLicense();
         return committedTasks;
     }
 
@@ -41,5 +46,15 @@ public class User {
 
     public Double getOccupiedDays() {
         return occupiedDays;
+    }
+
+    private void acquireLicense(){
+        Resources res = seqResource.peek();
+        boolean value = Resources.utilizeResource(res.getName(), this.skillLevel);
+        if(!value) waitingForResource = true;
+    }
+
+    private void surrenderLicense(){
+        Resources.surrenderResource(seqResource.poll().getName(), this.skillLevel);
     }
 }
