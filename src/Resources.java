@@ -51,7 +51,7 @@ public enum Resources {
     //to be used when we surrender a resource - a resource is given back by the user after using it
     public static boolean surrenderResource(String name){
         Integer resSize = currentsize.get(name);
-        if(resSize>=5) return false;
+        if(resSize>=getResourcesByName(name).get().getSize()) return false;
         currentsize.put(name, resSize+1);
         return true;
     }

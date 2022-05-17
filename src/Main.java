@@ -17,6 +17,11 @@ public class Main {
 
         Resources.surrenderResource("excel");
         Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
+        Resources.surrenderResource("excel");
 
 
         System.out.println(Resources.currentsize.toString());
@@ -26,10 +31,14 @@ public class Main {
         Task task2 = new Task(new String[]{"java","splunk"});
 
         User user1 = new User(1.0);
-        user1.addResourcesSeqquence(task1);
-        user1.addResourcesSeqquence(task2);
+        user1.addTasks(task1);
+        user1.addTasks(task2);
 
-        System.out.println(user1.getSeqResource().toString());
+        User user2 = new User(0.5);
+        user1.addTasks(task1);
+        user1.addTasks(task2);
+
+        Scheduler.userList.stream().forEach(usr -> System.out.println(usr));
 
 
 
