@@ -24,13 +24,17 @@ public class User extends TimerTask {
 
     //the timer is the time each task will be performed
     // (the last method parameter below --> period) is fastness of task completion
+    /*-----------------------------
+     * considering 2000 milliseconds as one day
+     ------------------------------*/
+    public static long day = 2000;
     long speedOfExecution;
 
     public User(Double skillLevel) {
         this.skillLevel = skillLevel;
         //when new user is added this has to be communicated to scheduler
         Scheduler.addUser(this);
-        this.speedOfExecution = (long)Math.floor(2000*skillLevel);
+        this.speedOfExecution = (long)Math.floor(day*skillLevel);
     }
 
     public Double getSkillLevel() {
@@ -46,7 +50,8 @@ public class User extends TimerTask {
         if(committedTasks.size()==1) {
             acquireLicense();
             //starting the timer to perform the tasks
-            timer.scheduleAtFixedRate(this,speedOfExecution,speedOfExecution);
+            System.out.println("user of skill : " + this.skillLevel + " initalising timer");
+            this.timer.scheduleAtFixedRate(this,speedOfExecution,speedOfExecution);
         }
         return committedTasks;
     }
@@ -82,6 +87,7 @@ public class User extends TimerTask {
     }
 
     private void stopTimer(){
+        System.out.println("user of skill : " + this.skillLevel + " cancelling timer");
         timer.cancel();
     }
 

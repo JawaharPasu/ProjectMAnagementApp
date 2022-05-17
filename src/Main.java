@@ -2,8 +2,11 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException{
         System.out.println("Hello There!");
+    /*-----------------------------
+     * considering 2000 milliseconds as one day
+     ------------------------------*/
 
         //The function should verify whether the project can be completed if work started today.
 
@@ -50,13 +53,16 @@ public class Main {
         //To add tasks to scheduler and check the status message from the scheduler
         System.out.println(Scheduler.addTaskToScheduler(task1,3.0));
         System.out.println(Scheduler.addTaskToScheduler(task2,2.5));
+        Thread.sleep(User.day);
         System.out.println(Scheduler.addTaskToScheduler(task3,4.5));
         System.out.println(Scheduler.addTaskToScheduler(task4,5.5));
+        Thread.sleep(User.day);
         System.out.println(Scheduler.addTaskToScheduler(task5,4.0));
         System.out.println(Scheduler.addTaskToScheduler(task6,2.0));
 
 
         //Resources.occupancyOfResource.entrySet().stream().forEach(System.out::println);
+
 
 
 

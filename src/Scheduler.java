@@ -9,6 +9,8 @@ public class Scheduler {
     //using tree set to make natural ordering of the users based on skillset, least time taken will be first
     public static TreeMap<Double, User> userList = new TreeMap();
 
+    private static Integer taskcount = 0;
+
     //currently adding initialised users to scheduler to track how many users are registered at a time.
     // Can be improved, but currently keeping the users to have unique value of skillset defined in User class
     public static User addUser(User user){
@@ -17,6 +19,7 @@ public class Scheduler {
 
     public static String addTaskToScheduler(Task task, Double days){
         taskInfo.put(task, days);
+        taskcount +=1;
         //once a task is added, the scheduler should look for resource availability based on skillset and
         // check whether the resource is occupied
         Double sum =0.0;
@@ -60,9 +63,9 @@ public class Scheduler {
             if(userskillSelected!=0.0) {
                 User usr = userList.get(userskillSelected);
                 usr.addTasks(task);
-                return "task added to user having skillset : " + usr.getSkillLevel().toString();
+                return "task " + taskcount +" is added to user having skillset : " + usr.getSkillLevel().toString();
             }
         }
-        return "All users are occupied";
+        return "WARNING: All users are occupied," + " task " + taskcount + " is not possible to execute";
     }
 }
