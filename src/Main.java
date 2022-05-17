@@ -27,14 +27,19 @@ public class Main {
 
 //        System.out.println(Resources.currentsize.toString());
 
-        //To create tasks
+        //To create tasks, pls include only the words defined in the Resources enum class
         Task task1 = new Task(new String[]{"excel","word"});
         //System.out.println(task1.getTasks().toString());
         Task task2 = new Task(new String[]{"java","splunk"});
+        Task task3 = new Task(new String[]{"java","word","excel"});
+        Task task4 = new Task(new String[]{"excel","splunk","java","word"});
+        Task task5 = new Task(new String[]{"word","splunk","excel"});
+        Task task6 = new Task(new String[]{"java","excel","splunk"});
 
         //To create users
         User user1 = new User(1.0);
         User user2 = new User(0.5);
+        User user3 = new User(0.7);
 //        user1.addTasks(task1);
 //        user1.addTasks(task2);
 //
@@ -45,8 +50,13 @@ public class Main {
         //To add tasks to scheduler and check the status message from the scheduler
         System.out.println(Scheduler.addTaskToScheduler(task1,3.0));
         System.out.println(Scheduler.addTaskToScheduler(task2,2.5));
+        System.out.println(Scheduler.addTaskToScheduler(task3,4.5));
+        System.out.println(Scheduler.addTaskToScheduler(task4,5.5));
+        System.out.println(Scheduler.addTaskToScheduler(task5,4.0));
+        System.out.println(Scheduler.addTaskToScheduler(task6,2.0));
 
-        //Resources.occupancyOfResource.entrySet().stream().forEach(System.out::println);
+
+        Resources.occupancyOfResource.entrySet().stream().forEach(System.out::println);
 
 
 
