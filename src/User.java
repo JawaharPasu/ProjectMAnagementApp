@@ -1,4 +1,8 @@
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 //defining user class which has specific user characteristic and tasks
 public class User extends TimerTask {
@@ -20,7 +24,10 @@ public class User extends TimerTask {
 
     private Integer count = 0;
 
-    Timer timer;
+    //Timer timer;
+
+    ScheduledExecutorService ses;
+    ScheduledFuture<?> scheduledFuture;
 
     //the timer is the time each task will be performed
     // (the last method parameter below --> period) is fastness of task completion
@@ -37,6 +44,10 @@ public class User extends TimerTask {
         this.speedOfExecution = (long)Math.floor(day*skillLevel);
     }
 
+    Runnable tasks = () -> {
+        run();
+    };
+
     public Double getSkillLevel() {
         return skillLevel;
     }
@@ -51,8 +62,10 @@ public class User extends TimerTask {
             acquireLicense();
             //starting the timer to perform the tasks
             System.out.println("user of skill : " + this.skillLevel + " initalising timer");
-            this.timer = new Timer();
-            this.timer.scheduleAtFixedRate(this,speedOfExecution,speedOfExecution);
+            //timer = new Timer();
+            //timer.scheduleAtFixedRate(this,speedOfExecution,speedOfExecution);
+            ses =  Executors.newScheduledThreadPool(1);
+            scheduledFuture = ses.scheduleAtFixedRate(tasks,speedOfExecution,speedOfExecution, TimeUnit.MILLISECONDS);
         }
         return committedTasks;
     }
@@ -89,7 +102,9 @@ public class User extends TimerTask {
 
     private void stopTimer(){
         System.out.println("user of skill : " + this.skillLevel + " cancelling timer");
-        timer.cancel();
+        //timer.cancel();
+        scheduledFuture.cancel(true);
+        ses.shutdown();
     }
 
     public void run(){
