@@ -20,7 +20,7 @@ public class User extends TimerTask {
 
     private Integer count = 0;
 
-    Timer timer = new Timer();
+    Timer timer;
 
     //the timer is the time each task will be performed
     // (the last method parameter below --> period) is fastness of task completion
@@ -51,6 +51,7 @@ public class User extends TimerTask {
             acquireLicense();
             //starting the timer to perform the tasks
             System.out.println("user of skill : " + this.skillLevel + " initalising timer");
+            this.timer = new Timer();
             this.timer.scheduleAtFixedRate(this,speedOfExecution,speedOfExecution);
         }
         return committedTasks;

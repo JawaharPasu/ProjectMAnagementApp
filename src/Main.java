@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException{
@@ -43,6 +44,8 @@ public class Main {
         User user1 = new User(1.0);
         User user2 = new User(0.5);
         User user3 = new User(0.7);
+        User user4 = new User(0.9);
+        User user5 = new User(0.4);
 //        user1.addTasks(task1);
 //        user1.addTasks(task2);
 //
@@ -53,14 +56,21 @@ public class Main {
         //To add tasks to scheduler and check the status message from the scheduler
         System.out.println(Scheduler.addTaskToScheduler(task1,3.0));
         System.out.println(Scheduler.addTaskToScheduler(task2,2.5));
-        Thread.sleep(User.day);
+        //Thread.sleep(User.day);
         System.out.println(Scheduler.addTaskToScheduler(task3,4.5));
         System.out.println(Scheduler.addTaskToScheduler(task4,5.5));
-        Thread.sleep(User.day);
+        //Thread.sleep(User.day);
         System.out.println(Scheduler.addTaskToScheduler(task5,4.0));
-        System.out.println(Scheduler.addTaskToScheduler(task6,2.0));
+        System.out.println(Scheduler.addTaskToScheduler(task6,3.0));
 
-
+        Set<Thread> threadSet
+                = Thread.getAllStackTraces().keySet();
+        // iterating over the threads to get the names of
+        // all the active threads
+        for (Thread x : threadSet) {
+            System.out.println(x.getName());
+        }
+        //Thread.sleep(4000);
         //Resources.occupancyOfResource.entrySet().stream().forEach(System.out::println);
 
 
