@@ -36,12 +36,12 @@ public class Main {
         System.out.println(Scheduler.addTaskToScheduler(task6,3.0));
 
         //This function is to check the active threads(users processing the tasks0
-        Set<Thread> threadSet
-                = Thread.getAllStackTraces().keySet();
+//        Set<Thread> threadSet
+//                = Thread.getAllStackTraces().keySet();
         // iterating over the threads to get the names of
         // all the active threads
-        for (Thread x : threadSet) {
-            System.out.println(x.getName());
-        }
+//        for (Thread x : threadSet) {
+//            System.out.println(x.getName());
+//        }
     }
 }

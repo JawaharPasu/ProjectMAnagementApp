@@ -61,10 +61,12 @@ public class Scheduler {
             }
             if(userskillSelected!=0.0) {
                 User usr = userList.get(userskillSelected);
-                usr.addTasks(task);
-                return "task " + taskcount +" is added to user having skillset : " + usr.getSkillLevel().toString();
+                usr.addTasks(taskcount, task);
+                System.out.println("\n ****** TASK ASSIGNED *****");
+                return "task " + taskcount +" is added to user having skillset : " + usr.getSkillLevel().toString() + "\n";
             }
         }
-        return "WARNING: All users are occupied," + " task " + taskcount + " is not possible to execute";
+        System.out.println("\n ******  ! NOT ASSIGNED ! *****");
+        return "WARNING: All users are occupied," + " task " + taskcount + " is not possible to execute" + "\n";
     }
 }

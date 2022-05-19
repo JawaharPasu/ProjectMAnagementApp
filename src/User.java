@@ -10,6 +10,7 @@ public class User {
     private Double skillLevel;
     //the list of tasks in plate for the user
     private List<Task> committedTasks = new ArrayList<>();
+    private List<Integer> tasksNumber = new ArrayList<>();
 
     //the resources are arranged in the sequence as FIFO
     private Queue<Resources> seqResource = new PriorityQueue<>();
@@ -26,6 +27,8 @@ public class User {
 
     private ScheduledExecutorService ses;
     private ScheduledFuture<?> scheduledFuture;
+
+    private Integer taskSizeCounter=0;
 
     //the timer is the time each task will be performed
     // (the last method parameter below --> period) is fastness of task completion
@@ -52,8 +55,9 @@ public class User {
     }
 
     //add task to the user and the resources queue in sequence
-    public List<Task> addTasks(Task task){
+    public List<Task> addTasks(Integer tasknum,Task task){
         committedTasks.add(task);
+        tasksNumber.add(tasknum);
         seqResource.addAll(task.getTasks());
         occupiedDays = seqResource.size()*skillLevel;
         //acquire the license when it is the first task to be executed
@@ -64,10 +68,6 @@ public class User {
             ses =  Executors.newScheduledThreadPool(1);
             scheduledFuture = ses.scheduleAtFixedRate(tasks,speedOfExecution,speedOfExecution, TimeUnit.MILLISECONDS);
         }
-        return committedTasks;
-    }
-
-    public List<Task> getCommittedTasks() {
         return committedTasks;
     }
 
@@ -92,6 +92,7 @@ public class User {
         String res = seqResource.poll().getName();
         boolean value = Resources.surrenderResource(res, this.skillLevel);
         surrenderedAndNext = seqResource.peek();
+        taskSizeCounter+=1;
         System.out.println("user of: "+ this.skillLevel + " surrendered the license of : " + res);
     }
 
@@ -101,7 +102,9 @@ public class User {
 
     //Stop the timer and the user goes to idle state as all his tasks are complete
     private void stopTimer(){
-        System.out.println("user of skill : " + this.skillLevel + " cancelling timer");
+        System.out.println("\n ***** IDLE NOTIFICATION *****");
+        System.out.println("user of skill : " + this.skillLevel + " completed all assigned tasks " +
+                " and is now IDLE! \n");
         scheduledFuture.cancel(true);
         ses.shutdown();
     }
@@ -119,6 +122,7 @@ public class User {
         // and acquire the license of next task
         else if(!waitingForResource){
             surrenderLicense();
+            decreaseTaskCount();
             //the size may become zero of the queue, s
             // o check if element available and continue to acquire the license
             if(this.seqResource.size()>0) acquireLicense();
@@ -130,6 +134,18 @@ public class User {
                 //setting false as we have acquired the license
                 waitingForResource = false;
             }
+        }
+    }
+
+    public void decreaseTaskCount(){
+        Task currentTask = committedTasks.get(0);
+        if(currentTask.getTasks().size() == taskSizeCounter){
+            committedTasks.remove(0);
+            System.out.println("\n ***** A TASK HAS BEEN COMPLETED ******");
+            System.out.println("Given Task " + tasksNumber.get(0) +
+                    " completed by the user of skil : " + this.skillLevel + "\n");
+            tasksNumber.remove(0);
+            taskSizeCounter = 0;
         }
     }
 }
