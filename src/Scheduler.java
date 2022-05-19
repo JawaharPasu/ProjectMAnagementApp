@@ -1,6 +1,4 @@
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.stream.DoubleStream;
 
 //this class orchestrates the assignation of users and resources
 public class Scheduler {
@@ -35,6 +33,7 @@ public class Scheduler {
             }
         }
         //if the resources are occupied for the entire time before deadline, then return false
+        //Resources.occupancyOfResource.entrySet().stream().forEach(System.out::println);
         if(sum > days) return "no resources available";
         //if resources are available (assuming user has all the licesnces for the req tasks)
         if(sum<=days){

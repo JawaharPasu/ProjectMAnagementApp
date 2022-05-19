@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 //defining user class which has specific user characteristic and tasks
-public class User extends TimerTask {
+public class User {
     //it provides the speed of the user in executing the task (lower is better)
     private Double skillLevel;
     //the list of tasks in plate for the user
@@ -24,10 +24,8 @@ public class User extends TimerTask {
 
     private Integer count = 0;
 
-    //Timer timer;
-
-    ScheduledExecutorService ses;
-    ScheduledFuture<?> scheduledFuture;
+    private ScheduledExecutorService ses;
+    private ScheduledFuture<?> scheduledFuture;
 
     //the timer is the time each task will be performed
     // (the last method parameter below --> period) is fastness of task completion
@@ -41,6 +39,7 @@ public class User extends TimerTask {
         this.skillLevel = skillLevel;
         //when new user is added this has to be communicated to scheduler
         Scheduler.addUser(this);
+        //speed of execution is skilllevel*day so as to distinguish speed between each other user
         this.speedOfExecution = (long)Math.floor(day*skillLevel);
     }
 
@@ -62,8 +61,6 @@ public class User extends TimerTask {
             acquireLicense();
             //starting the timer to perform the tasks
             System.out.println("user of skill : " + this.skillLevel + " initalising timer");
-            //timer = new Timer();
-            //timer.scheduleAtFixedRate(this,speedOfExecution,speedOfExecution);
             ses =  Executors.newScheduledThreadPool(1);
             scheduledFuture = ses.scheduleAtFixedRate(tasks,speedOfExecution,speedOfExecution, TimeUnit.MILLISECONDS);
         }
@@ -82,6 +79,7 @@ public class User extends TimerTask {
         return occupiedDays;
     }
 
+    //Acquire license of a the current task from the Resource available(Resource class)
     private void acquireLicense(){
         String res = seqResource.peek().getName();
         boolean value = Resources.utilizeResource(res, this.skillLevel);
@@ -89,6 +87,7 @@ public class User extends TimerTask {
         System.out.println("user of: "+ this.skillLevel + " acquired the license of : " + res);
     }
 
+    //Surrender license of the Resource used so that it will be available for other users
     private void surrenderLicense(){
         String res = seqResource.poll().getName();
         boolean value = Resources.surrenderResource(res, this.skillLevel);
@@ -100,13 +99,15 @@ public class User extends TimerTask {
         return count+=1;
     }
 
+    //Stop the timer and the user goes to idle state as all his tasks are complete
     private void stopTimer(){
         System.out.println("user of skill : " + this.skillLevel + " cancelling timer");
-        //timer.cancel();
         scheduledFuture.cancel(true);
         ses.shutdown();
     }
 
+    //This method runs at the speed of the user,
+    //once first time limit is reached, it will mark the task as completed by the user
     public void run(){
         //System.out.println("running repeat function of : "+ this.skillLevel + " count = " + counterMethod());
         //if there is no items in the queue stop the timer

@@ -27,3 +27,10 @@ task 1 is added to user having skillset : 0.5
 
 If a task cannot be assigned then the message will read as follows:
 WARNING: All users are occupied, task 6 is not possible to execute
+
+
+/-------
+NO JUNITS
+I have not included test cases, as there are multiple scenarios
+My focus is to develop the application for now
+--------/
